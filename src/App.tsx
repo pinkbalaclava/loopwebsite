@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Wifi, Search, MapPin, Building, ArrowLeft, ArrowRight, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin as LocationPin } from 'lucide-react';
+import { supabase } from './lib/supabase';
 import Selector from './components/Selector';
 import PlanCard from './components/PlanCard';
 import ProviderCard from './components/ProviderCard';
@@ -108,7 +109,7 @@ function App() {
   const handleFinalSubmit = async () => {
     setIsSubmitting(true);
     
-    // Prepare data for Supabase customers table
+    // Prepare data for Supabase customers table - matching exact schema
     const customerData = {
       name: stepperData.contactInfo.name,
       phone_number: stepperData.contactInfo.phone_number,
@@ -125,15 +126,18 @@ function App() {
     };
 
     try {
-      const response = await fetch('https://hook.eu2.make.com/s79debs28rc0f9vzxacyw4ww8joj5ctv', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(customerData),
-      });
+      const { data, error } = await supabase
+        .from('customers')
+        .insert([customerData])
+        .select();
       
-      if (response.ok) {
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      if (data) {
+        console.log('Successfully inserted customer:', data);
         alert('Thank you! We\'ll be in touch soon with your personalized quote.');
         // Reset stepper
         setStepperData({
@@ -149,10 +153,9 @@ function App() {
             manual_location: ''
           }
         });
-      } else {
-        throw new Error('Failed to submit');
       }
     } catch (error) {
+      console.error('Submission error:', error);
       alert('Sorry, there was an error. Please try again.');
     } finally {
       setIsSubmitting(false);
