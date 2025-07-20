@@ -18,9 +18,9 @@ function App() {
     selectedProvider: '',
     contactInfo: {
       name: '',
-      surname: '',
-      number: '',
-      email: ''
+      phone_number: '',
+      preferred_language: 'en' as 'en' | 'af' | 'zu',
+      manual_location: ''
     }
   });
 
@@ -136,9 +136,9 @@ function App() {
           selectedProvider: '',
           contactInfo: {
             name: '',
-            surname: '',
-            number: '',
-            email: ''
+            phone_number: '',
+            preferred_language: 'en' as 'en' | 'af' | 'zu',
+            manual_location: ''
           }
         });
       } else {
@@ -166,7 +166,7 @@ function App() {
       case 2: return stepperData.selectedPlan !== null;
       case 3: return stepperData.selectedProvider !== '';
       case 4: return stepperData.contactInfo.name && stepperData.contactInfo.surname && 
-                     stepperData.contactInfo.number && stepperData.contactInfo.email;
+                     stepperData.contactInfo.phone_number && stepperData.contactInfo.manual_location;
       default: return false;
     }
   };
@@ -325,34 +325,34 @@ function App() {
               
               <div className="bg-white rounded-lg shadow-md p-6">
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      placeholder="First Name"
-                      value={stepperData.contactInfo.name}
-                      onChange={(e) => handleContactInfoChange('name', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Last Name"
-                      value={stepperData.contactInfo.surname}
-                      onChange={(e) => handleContactInfoChange('surname', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
                   <input
-                    type="tel"
-                    placeholder="Phone Number"
-                    value={stepperData.contactInfo.number}
-                    onChange={(e) => handleContactInfoChange('number', e.target.value)}
+                    type="text"
+                    placeholder="Full Name"
+                    value={stepperData.contactInfo.name}
+                    onChange={(e) => handleContactInfoChange('name', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
-                    type="email"
-                    placeholder="Email Address"
-                    value={stepperData.contactInfo.email}
-                    onChange={(e) => handleContactInfoChange('email', e.target.value)}
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={stepperData.contactInfo.phone_number}
+                    onChange={(e) => handleContactInfoChange('phone_number', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <select
+                    value={stepperData.contactInfo.preferred_language}
+                    onChange={(e) => handleContactInfoChange('preferred_language', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="en">English</option>
+                    <option value="af">Afrikaans</option>
+                    <option value="zu">Zulu</option>
+                  </select>
+                  <input
+                    type="text"
+                    placeholder="Your Location/Address"
+                    value={stepperData.contactInfo.manual_location}
+                    onChange={(e) => handleContactInfoChange('manual_location', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>

@@ -17,9 +17,9 @@ export interface FAQ {
 
 export interface ContactForm {
   name: string;
-  surname: string;
-  number: string;
-  email: string;
+  phone_number: string;
+  preferred_language: 'en' | 'af' | 'zu';
+  manual_location: string;
 }
 
 export interface StepperData {
