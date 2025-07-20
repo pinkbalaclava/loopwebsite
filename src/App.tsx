@@ -108,12 +108,20 @@ function App() {
   const handleFinalSubmit = async () => {
     setIsSubmitting(true);
     
-    const submissionData = {
-      area: stepperData.selectedOption,
-      areaType: stepperData.selectorMode,
-      plan: stepperData.selectedPlan,
-      provider: stepperData.selectedProvider,
-      contact: stepperData.contactInfo
+    // Prepare data for Supabase customers table
+    const customerData = {
+      name: stepperData.contactInfo.name,
+      phone_number: stepperData.contactInfo.phone_number,
+      preferred_language: stepperData.contactInfo.preferred_language,
+      manual_location: stepperData.contactInfo.manual_location,
+      selected_area: stepperData.selectedOption,
+      area_type: stepperData.selectorMode,
+      selected_plan_title: stepperData.selectedPlan?.title,
+      selected_plan_speed: stepperData.selectedPlan?.speed,
+      selected_plan_price: stepperData.selectedPlan?.price,
+      selected_provider_name: providers.find(p => p.id === stepperData.selectedProvider)?.name,
+      status: 'pending',
+      current_journey_stage: 'consideration'
     };
 
     try {
@@ -122,7 +130,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(submissionData),
+        body: JSON.stringify(customerData),
       });
       
       if (response.ok) {
@@ -165,8 +173,9 @@ function App() {
       case 1: return stepperData.selectedOption !== '';
       case 2: return stepperData.selectedPlan !== null;
       case 3: return stepperData.selectedProvider !== '';
-      case 4: return stepperData.contactInfo.name && stepperData.contactInfo.surname && 
-                     stepperData.contactInfo.phone_number && stepperData.contactInfo.manual_location;
+      case 4: return stepperData.contactInfo.name && 
+                     stepperData.contactInfo.phone_number && 
+                     stepperData.contactInfo.manual_location;
       default: return false;
     }
   };
